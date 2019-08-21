@@ -1,9 +1,8 @@
 package camdev.sokra.topnews.ui.insert.mvp;
 
 import camdev.sokra.topnews.callback.InteractorResponse;
-import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
-import camdev.sokra.topnews.model.crud.ArticlesCRUD;
+import camdev.sokra.topnews.model.crud.ArticlesCRUDRespone;
 
 public interface AddMPV {
     interface VIEW{
@@ -14,6 +13,6 @@ public interface AddMPV {
         void onInsert(Articles articles);
     }
     interface Interactor{
-        void onIsert(Articles articles,InteractorResponse<ArticlesCRUD> responses);
+        void onIsert(Articles articles,InteractorResponse<ArticlesCRUDRespone> responses);
     }
 }

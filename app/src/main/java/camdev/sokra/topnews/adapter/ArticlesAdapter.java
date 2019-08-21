@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -20,13 +19,16 @@ import java.util.List;
 import camdev.sokra.topnews.R;
 import camdev.sokra.topnews.model.Articles;
 import camdev.sokra.topnews.model.Author;
+import camdev.sokra.topnews.ui.main.MainActivity;
 
-public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder>{
     private List<Articles> articlesList;
     AppCompatActivity context;
     private OnArticleCRUD listener;
-    public ArticlesAdapter(List<Articles> leaguesList, AppCompatActivity context) {
-        this.articlesList = leaguesList;
+    private static int TYPE_CALL = 1;
+    private static int TYPE_EMAIL = 2;
+    public ArticlesAdapter(List<Articles> articlesList, AppCompatActivity context) {
+        this.articlesList = articlesList;
         this.context = context;
         this.listener = (OnArticleCRUD) context;
     }
@@ -34,7 +36,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.leagues_rows_lists,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.articles_relate_rows_lists,viewGroup,false);
         return new ArticlesAdapter.ViewHolder(view);
     }
 
@@ -45,10 +47,38 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         final PopupMenu popupMenu = new PopupMenu(context,viewHolder.btnOptionMenu);
         popupMenu.getMenuInflater().inflate(R.menu.option_menu,popupMenu.getMenu());
        try {
-           Glide.with(context).load(author.getImageUrl()).thumbnail(Glide.with(context).load(R.drawable.loading_100x)).into(viewHolder.profile_image);
-           Glide.with(context).load(articles.getImage()).thumbnail(Glide.with(context).load(R.drawable.spinner_200px)).into(viewHolder.artImage);
-           viewHolder.artTitle.setText(articles.getTitle());
-           viewHolder.artAuthor.setText(author.getName());
+               //Glide.with(context).load(author.getImageUrl()).thumbnail(Glide.with(context).load(R.drawable.loading_100x)).into(viewHolder.profile_image);
+               Glide.with(context).load(articles.getImage()).placeholder(R.drawable.ic_add_a_photo_black_24dp).thumbnail(Glide.with(context).load(R.drawable.spinner_200px)).into(viewHolder.artImage);
+               viewHolder.artTitle.setText(articles.getTitle());
+               //viewHolder.artAuthor.setText(author.getName());
+
+               viewHolder.btnOptionMenu.setOnClickListener(new View.OnClickListener() {
+
+                   @Override
+                   public void onClick(View v) {
+                       popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                           @Override
+                           public boolean onMenuItemClick(MenuItem item) {
+                               switch (item.getItemId()){
+                                   case R.id.btnUpdate:
+                                       if (listener !=null){
+                                           listener.onArticlesUpdate(articles);
+                                           return true;
+                                       }
+                                   case R.id.btnDelete:
+                                       if (listener !=null){
+                                           listener.onArticlesDelete(viewHolder.getAdapterPosition(),articles);
+                                           return true;
+                                       }
+                                   default: return false;
+                               }
+                           }
+                       });
+                       popupMenu.show();
+
+                   }
+               });
+
        }catch (Exception e){
            Log.e("1111",""+e.toString());
        }
@@ -60,31 +90,7 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
                }
            }
        });
-       viewHolder.btnOptionMenu.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                   @Override
-                   public boolean onMenuItemClick(MenuItem item) {
-                       switch (item.getItemId()){
-                           case R.id.btnUpdate:
-                               if (listener !=null){
-                                   listener.onArticlesUpdate(articles);
-                                   return true;
-                               }
-                           case R.id.btnDelete:
-                               if (listener !=null){
-                                   listener.onArticlesDelete(viewHolder.getAdapterPosition(),articles);
-                                   return true;
-                               }
-                           default: return false;
-                       }
-                      // return true;
-                   }
-               });
-               popupMenu.show();
-           }
-       });
+
 
     }
 
@@ -111,15 +117,6 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         }
     }
 
-    public void addNullData() {
-        articlesList.add(null);
-        notifyItemInserted(articlesList.size() - 1);
-    }
-    public void removeNull() {
-        articlesList.remove(articlesList.size() - 1);
-        notifyItemRemoved(articlesList.size());
-    }
-
     public void addMoreItem(List<Articles> articles){
         int previousDataSize = this.articlesList.size();
         this.articlesList.addAll(articles);
@@ -131,6 +128,4 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
         void onArticlesDelete(int position,Articles articles);
         void onArticlesUpdate(Articles getUpdateArticles);
     }
-
-
 }

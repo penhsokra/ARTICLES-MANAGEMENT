@@ -3,7 +3,6 @@ package camdev.sokra.topnews.ui.main;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,6 +18,7 @@ import camdev.sokra.topnews.R;
 import camdev.sokra.topnews.adapter.ArticlesAdapter;
 import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
+import camdev.sokra.topnews.service.ArticlesService;
 import camdev.sokra.topnews.ui.main.mvp.MainMVP;
 import camdev.sokra.topnews.ui.main.mvp.MainPresenter;
 
@@ -27,19 +27,28 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.View,Ar
     private ImageView dImage;
     private ImageView btnBack;
     private RecyclerView rvRelate;
-    private List<Articles> articles = new ArrayList<>();
+    private List<Articles> articlesList = new ArrayList<>();
     private ArticlesAdapter articlesAdapter;
     private MainPresenter presenter;
+    private TextView rlTitle;
+    ArticlesService articlesService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+        rlTitle = findViewById(R.id.rdartTitle);
         btnBack = findViewById(R.id.btnBack);
-        dtitle = findViewById(R.id.dartTitle);
+        dtitle = findViewById(R.id.xdartTitle);
         ddesc = findViewById(R.id.dartDetail);
-        dImage = findViewById(R.id.dartImage);
+        dImage = findViewById(R.id.xdartImage);
+        rvRelate = findViewById(R.id.rvRelate);
 
         if (getIntent() !=null){
                 Articles getArticles = getIntent().getParcelableExtra("DetailArticles");
@@ -54,21 +63,20 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.View,Ar
                 finish();
             }
         });
-        reLate();
         presenter = new MainPresenter(this);
         presenter.onLoadingData("",1,6);
-    }
 
-    private void reLate(){
-        rvRelate = findViewById(R.id.rvRelate);
-        rvRelate.setLayoutManager(new GridLayoutManager(this,2));
-        articlesAdapter = new ArticlesAdapter(articles,this);
+        rvRelate.setLayoutManager(new LinearLayoutManager(this));
+        rvRelate.setNestedScrollingEnabled(false);
+        articlesAdapter = new ArticlesAdapter(articlesList,this);
         rvRelate.setAdapter(articlesAdapter);
+
     }
 
     @Override
     public void onRequestSuccess(ArticilesRespone articles) {
-        articlesAdapter.addMoreItem(articles.getData());
+        articlesList.addAll(articles.getData());
+        articlesAdapter.notifyDataSetChanged();
     }
 
     @Override

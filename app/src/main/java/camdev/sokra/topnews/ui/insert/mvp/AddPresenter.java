@@ -1,11 +1,8 @@
 package camdev.sokra.topnews.ui.insert.mvp;
 
-import android.widget.Toast;
-
 import camdev.sokra.topnews.callback.InteractorResponse;
-import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
-import camdev.sokra.topnews.model.crud.ArticlesCRUD;
+import camdev.sokra.topnews.model.crud.ArticlesCRUDRespone;
 
 public class AddPresenter implements AddMPV.Presentor{
     private AddMPV.Interactor interactor;
@@ -18,9 +15,9 @@ public class AddPresenter implements AddMPV.Presentor{
 
     @Override
     public void onInsert(Articles articles) {
-        interactor.onIsert(articles, new InteractorResponse<ArticlesCRUD>() {
+        interactor.onIsert(articles, new InteractorResponse<ArticlesCRUDRespone>() {
             @Override
-            public void onSuccess(ArticlesCRUD dataResponse) {
+            public void onSuccess(ArticlesCRUDRespone dataResponse) {
 
             }
 

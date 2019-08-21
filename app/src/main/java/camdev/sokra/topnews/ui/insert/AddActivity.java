@@ -6,13 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,19 +17,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 
 import camdev.sokra.topnews.R;
 import camdev.sokra.topnews.auth.ServiceGenerator;
-import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
 import camdev.sokra.topnews.model.Author;
 import camdev.sokra.topnews.model.UploadImageRespone;
 import camdev.sokra.topnews.model.crud.ArticlesCRUD;
 import camdev.sokra.topnews.service.ArticlesService;
-import camdev.sokra.topnews.ui.insert.mvp.AddInteractor;
-import camdev.sokra.topnews.ui.insert.mvp.AddMPV;
 import camdev.sokra.topnews.ui.insert.mvp.AddPresenter;
 import camdev.sokra.topnews.util.RequestPermissions;
 import okhttp3.MediaType;
@@ -41,7 +33,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 public class AddActivity extends AppCompatActivity{
     private EditText edTitle,edDes,edAuthorID;
@@ -55,7 +46,7 @@ public class AddActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add);
+        setContentView(R.layout.activity_update);
         edTitle = findViewById(R.id.edTitle);
         edDes = findViewById(R.id.edDesc);
         edAuthorID = findViewById(R.id.edAuthorID);
@@ -64,9 +55,6 @@ public class AddActivity extends AppCompatActivity{
 
         articlesService = ServiceGenerator.createService(ArticlesService.class);
         RequestPermissions.checkStorageAccessPermissions(this);
-        //presenter = new AddPresenter(this);
-
-
 
         articleImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,17 +68,20 @@ public class AddActivity extends AppCompatActivity{
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String id = edAuthorID.getText().toString();
+                if (id.isEmpty()){
+                    edAuthorID.requestFocus();
+                    return;
+                }
 
+                ArticlesCRUD articles = new ArticlesCRUD(
+                        0,
+                        Integer.valueOf(edAuthorID.getText().toString()),
+                        edTitle.getText().toString(),
+                        edDes.getText().toString(),
+                        imageURL
+                );
 
-                Articles articles = new Articles();
-
-                Author author = new Author();
-                author.setId(Integer.valueOf(Integer.valueOf(edAuthorID.getText().toString())));
-                articles.setAuthor(author);
-
-                articles.setTitle(edTitle.getText().toString());
-                articles.setDescription(edDes.getText().toString());
-                articles.setImage(imageURL);
                 Intent addInten = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("data",articles);
