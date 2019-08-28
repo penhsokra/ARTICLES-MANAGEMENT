@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -45,6 +46,8 @@ public class UpdateActivity extends AppCompatActivity {
     private static final int READ_REQUEST_CODE = 300;
     private ArticlesService articlesService;
     private String imageURL;
+    private ProgressBar progressBar;
+    private Button btnCancel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +56,16 @@ public class UpdateActivity extends AppCompatActivity {
         edDes = findViewById(R.id.edDesc);
         edAuthorID = findViewById(R.id.edAuthorID);
         btnSave = findViewById(R.id.btnSave);
+        progressBar = findViewById(R.id.progressBar);
         articleImage = findViewById(R.id.articlesImage);
+        btnCancel = findViewById(R.id.btnCancel);
 
         articlesService = ServiceGenerator.createService(ArticlesService.class);
         RequestPermissions.checkStorageAccessPermissions(this);
+
+        btnCancel.setOnClickListener(v->{
+            finish();
+        });
 
         articleImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +109,6 @@ public class UpdateActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     @Override
@@ -138,16 +145,18 @@ public class UpdateActivity extends AppCompatActivity {
         final File file = new File(fileName);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"),file);
         MultipartBody.Part part = MultipartBody.Part.createFormData("FILE",fileName,requestBody);
-
+        progressBar.setVisibility(View.VISIBLE);
         Call<UploadImageRespone> call = articlesService.uploadImage(part);
         call.enqueue(new Callback<UploadImageRespone>() {
             @Override
             public void onResponse(Call<UploadImageRespone> call, Response<UploadImageRespone> response) {
                 imageURL = response.body().getData();
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(UpdateActivity.this, "Upload Success", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onFailure(Call<UploadImageRespone> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(UpdateActivity.this, "Upload Fail"+t.toString(), Toast.LENGTH_SHORT).show();
             }
         });

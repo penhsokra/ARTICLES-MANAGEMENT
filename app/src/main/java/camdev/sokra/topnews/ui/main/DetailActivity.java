@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,23 +39,29 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.View,Ar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        View decorView = getWindow().getDecorView();
+        //View decorView = getWindow().getDecorView();
         // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+       // decorView.setSystemUiVisibility(uiOptions);
 
         rlTitle = findViewById(R.id.rdartTitle);
         btnBack = findViewById(R.id.btnBack);
-        dtitle = findViewById(R.id.xdartTitle);
+        dtitle = findViewById(R.id.dartTitle);
         ddesc = findViewById(R.id.dartDetail);
-        dImage = findViewById(R.id.xdartImage);
+        dImage = findViewById(R.id.dartImage);
         rvRelate = findViewById(R.id.rvRelate);
 
         if (getIntent() !=null){
                 Articles getArticles = getIntent().getParcelableExtra("DetailArticles");
+
+            try {
                 Glide.with(this).load(getArticles.getImage()).thumbnail(Glide.with(this).load(R.drawable.spinner_200px)).into(dImage);
                 dtitle.setText(getArticles.getTitle());
                 ddesc.setText(getArticles.getDescription());
+            }catch (Exception e){
+                Log.e("0000",""+e.toString());
+            }
+
         }
 
         btnBack.setOnClickListener(new View.OnClickListener() {

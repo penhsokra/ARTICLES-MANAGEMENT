@@ -6,10 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -69,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
     private List<String> mImages = new ArrayList<>();
     TextView customCarouselLabel;
     LinearLayoutManager layoutManager;
+    private ImageView loadingImg;
+    private ConstraintLayout lyLoading;
+    private FloatingActionButton floatingActionButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +83,28 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         setContentView(R.layout.activity_main);
         View decorView = getWindow().getDecorView();
         // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        //decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the
         // status bar is hidden, so hide that too if necessary.
 
+        Toolbar collapsingToolbar = findViewById(R.id.toolbar);
+        collapsingToolbar.setTitle("TOP NEWS");
 
+        floatingActionButton = findViewById(R.id.floatingActionButton);
+        lyLoading = findViewById(R.id.lyLoading);
+        loadingImg = findViewById(R.id.loadingImg);
+        Glide.with(this).load(R.drawable.loading).thumbnail(Glide.with(this).load(R.drawable.loading)).into(loadingImg);
+        final Handler myH = new Handler();
+        myH.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                lyLoading.setVisibility(View.GONE);
+                setTheme(R.style.AppTheme);
+            }
+        }, 5000);
 
-        customCarouselLabel =findViewById(R.id.customCarouselLabel);
+        //customCarouselLabel =findViewById(R.id.customCarouselLabel);
 
         presenter = new MainPresenter(this);
         articlesService = ServiceGenerator.createService(ArticlesService.class);
@@ -92,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         /* slide */
         mImages = Arrays.asList(new String[]{"" +
                 "https://i2.wp.com/www.feedough.com/wp-content/uploads/2018/04/ADVERTISING-07.png",
-                "http://www.serviceonemarketing.com/wp-content/uploads/2018/08/Advantages-of-Advertising.jpg",
-                "https://thebrandgym.com/wp-content/uploads/2017/04/55fae9062f26d-future-gazing-advertising-160915_55fae9062f178.jpg",
+                "https://nullsgpl.b-cdn.net/wp-content/uploads/2018/01/Unlimited-Addons-for-WPBakery-Page-Builder-Free.png",
+                "http://vamarf.net.br/wp-content/uploads/2018/07/CYBER02.png",
                 "http://cash4ads.com/wp-content/uploads/2016/09/advertising.jpg",
 
         });
@@ -101,6 +122,14 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         carouselView.setPageCount(mImages.size());
         carouselView.setImageListener(imageListener);
         /* //slide */
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, AddActivity.class);
+                startActivityForResult(i,ADD_REQUEST_CODE);
+            }
+        });
     }
 
     ImageListener imageListener = new ImageListener() {
@@ -121,11 +150,13 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         get_Page = findViewById(R.id.getPage);
         Glide.with(this).load(R.drawable.loading_elip).thumbnail(Glide.with(this).load(R.drawable.loading_elip)).into(imgLoadingPage);
         rvArticlse = findViewById(R.id.rvArticles);
+        //rvArticlse.setNestedScrollingEnabled(false);
 
         //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvArticlse.setLayoutManager(linearLayoutManager);
         articlesAdapter = new ArticlesAdapter(articlesList,this);
+
         rvArticlse.setAdapter(articlesAdapter);
 
         rvArticlse.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
@@ -140,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            presenter.onLoadingData("",page,5);
+                            presenter.onLoadingData("",page,10);
                             get_Page.setText(""+page);
                         }
                     }, 100);
@@ -157,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                 return isLoading;
             }
         });
-        presenter.onLoadingData("",page,5);
+        presenter.onLoadingData("",page,10);
     }
 
     @Override
