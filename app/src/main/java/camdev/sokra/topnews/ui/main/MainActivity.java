@@ -113,9 +113,9 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         /* slide */
         mImages = Arrays.asList(new String[]{"" +
                 "https://i2.wp.com/www.feedough.com/wp-content/uploads/2018/04/ADVERTISING-07.png",
-                "https://nullsgpl.b-cdn.net/wp-content/uploads/2018/01/Unlimited-Addons-for-WPBakery-Page-Builder-Free.png",
+               // "https://nullsgpl.b-cdn.net/wp-content/uploads/2018/01/Unlimited-Addons-for-WPBakery-Page-Builder-Free.png",
                 "http://vamarf.net.br/wp-content/uploads/2018/07/CYBER02.png",
-                "http://cash4ads.com/wp-content/uploads/2016/09/advertising.jpg",
+               // "http://cash4ads.com/wp-content/uploads/2016/09/advertising.jpg",
 
         });
         carouselView = (CarouselView) findViewById(R.id.carouselView);
@@ -295,7 +295,9 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
             articlesService.update(articlesCRUD.getId(),articlesCRUD).enqueue(new Callback<ArticlesCRUDRespone>() {
                 @Override
                 public void onResponse(Call<ArticlesCRUDRespone> call, Response<ArticlesCRUDRespone> response) {
-                    articlesAdapter.notifyDataSetChanged();
+                    //articlesAdapter.notifyItemInserted(0);
+                    //articlesAdapter.notifyDataSetChanged();
+                    //rvArticlse.smoothScrollToPosition(0);
                     Toast.makeText(MainActivity.this, "Update Success", Toast.LENGTH_SHORT).show();
                 }
 
@@ -313,11 +315,10 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
             articlesService.create(articlesData).enqueue(new Callback<ArticlesCRUDRespone>() {
                 @Override
                 public void onResponse(Call<ArticlesCRUDRespone> call, Response<ArticlesCRUDRespone> response) {
-                    //Log.e("0000",""+articlesData.getAuthor().getId());
                     articlesList.add(newArticles);
                     //articlesAdapter.notifyItemInserted(0);
-                    articlesAdapter.notifyDataSetChanged();
-                    rvArticlse.smoothScrollToPosition(0);
+                    //articlesAdapter.notifyDataSetChanged();
+                    //rvArticlse.smoothScrollToPosition(0);
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
 

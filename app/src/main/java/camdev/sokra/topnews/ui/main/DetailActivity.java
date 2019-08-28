@@ -1,6 +1,7 @@
 package camdev.sokra.topnews.ui.main;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +45,7 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.View,Ar
         //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
        // decorView.setSystemUiVisibility(uiOptions);
 
-        rlTitle = findViewById(R.id.rdartTitle);
+        rlTitle = findViewById(R.id.dartTitle);
         btnBack = findViewById(R.id.btnBack);
         dtitle = findViewById(R.id.dartTitle);
         ddesc = findViewById(R.id.dartDetail);
@@ -71,13 +72,12 @@ public class DetailActivity extends AppCompatActivity implements MainMVP.View,Ar
             }
         });
         presenter = new MainPresenter(this);
-        presenter.onLoadingData("",1,6);
+        presenter.onLoadingData("",1,10);
 
         rvRelate.setLayoutManager(new LinearLayoutManager(this));
         rvRelate.setNestedScrollingEnabled(false);
         articlesAdapter = new ArticlesAdapter(articlesList,this);
         rvRelate.setAdapter(articlesAdapter);
-
     }
 
     @Override
