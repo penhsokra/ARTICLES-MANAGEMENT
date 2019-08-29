@@ -298,7 +298,8 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                     //articlesAdapter.notifyItemInserted(0);
                     //articlesAdapter.notifyDataSetChanged();
                     //rvArticlse.smoothScrollToPosition(0);
-                    Toast.makeText(MainActivity.this, "Update Success", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(MainActivity.this, "Update Success"+response.body().getArticles().toString(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override

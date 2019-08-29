@@ -19,7 +19,6 @@ import java.util.List;
 import camdev.sokra.topnews.R;
 import camdev.sokra.topnews.model.Articles;
 import camdev.sokra.topnews.model.Author;
-import camdev.sokra.topnews.ui.main.MainActivity;
 
 public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHolder>{
     private List<Articles> articlesList;
@@ -108,8 +107,8 @@ public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.ViewHo
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            artImage = itemView.findViewById(R.id.dartImage);
-            artTitle = itemView.findViewById(R.id.dartTitle);
+            artImage = itemView.findViewById(R.id.imageURL);
+            artTitle = itemView.findViewById(R.id.title);
             artAuthor = itemView.findViewById(R.id.artAuthor);
             profile_image = itemView.findViewById(R.id.profile_image);
             btnOptionMenu = itemView.findViewById(R.id.btnOption);

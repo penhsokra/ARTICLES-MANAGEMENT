@@ -1,6 +1,6 @@
-package camdev.sokra.topnews.auth;
+package camdev.sokra.topnews.scrap.authservice;
 
-import camdev.sokra.topnews.service.BlogService;
+import camdev.sokra.topnews.scrap.service.BlogService;
 import pl.droidsonroids.retrofit2.JspoonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

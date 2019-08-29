@@ -16,7 +16,7 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/dateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -24,7 +24,7 @@
             android:text="2019/08/09"
             android:textColor="#8A8989"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dartImage" />
+            app:layout_constraintStart_toEndOf="@+id/imageURL" />
 
         <ImageView
             android:id="@+id/btnOption"
@@ -36,7 +36,7 @@
             app:srcCompat="@drawable/ic_more_vert_black_24dp" />
 
         <ImageView
-            android:id="@+id/dartImage"
+            android:id="@+id/imageURL"
             android:layout_width="130dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
@@ -45,7 +45,7 @@
             app:srcCompat="@drawable/ic_launcher_background" />
 
         <TextView
-            android:id="@+id/dartTitle"
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -56,7 +56,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/dartImage"
+            app:layout_constraintStart_toEndOf="@+id/imageURL"
             app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
