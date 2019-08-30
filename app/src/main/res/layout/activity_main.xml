@@ -32,6 +32,7 @@
                 app:radius="6dp"
                 app:slideInterval="3000"
                 app:strokeColor="#FF777777"
+                android:clickable="true"
                 app:strokeWidth="1dp" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -58,7 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#2f85dc"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

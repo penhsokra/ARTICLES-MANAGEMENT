@@ -19,6 +19,7 @@ import camdev.sokra.topnews.R;
 import camdev.sokra.topnews.adapter.ArticlesAdapter;
 import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
+import camdev.sokra.topnews.scrap.model.ScrapArticlseRespone;
 import camdev.sokra.topnews.service.ArticlesService;
 import camdev.sokra.topnews.ui.main.mvp.MainMVP;
 import camdev.sokra.topnews.ui.main.mvp.MainPresenter;

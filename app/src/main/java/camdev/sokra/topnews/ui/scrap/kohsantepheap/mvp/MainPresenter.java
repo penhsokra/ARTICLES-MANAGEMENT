@@ -1,7 +1,8 @@
-package camdev.sokra.topnews.ui.main.mvp;
+package camdev.sokra.topnews.ui.scrap.kohsantepheap.mvp;
 
 import camdev.sokra.topnews.callback.InteractorResponse;
 import camdev.sokra.topnews.model.ArticilesRespone;
+import camdev.sokra.topnews.scrap.model.ScrapArticlseRespone;
 
 public class MainPresenter implements MainMVP.Presenter{
     private MainMVP.Interactor interactor;
@@ -12,12 +13,11 @@ public class MainPresenter implements MainMVP.Presenter{
         this.view = view;
     }
 
-
     @Override
-    public void onLoadingData(String title, int page, int limit) {
-        interactor.onLoadingData(title,page, limit, new InteractorResponse<ArticilesRespone>() {
+    public void onLoadingData(int page) {
+        interactor.onLoadingData(page, new InteractorResponse<ScrapArticlseRespone>() {
             @Override
-            public void onSuccess(ArticilesRespone dataResponse) {
+            public void onSuccess(ScrapArticlseRespone dataResponse) {
                 view.onRequestSuccess(dataResponse);
             }
 

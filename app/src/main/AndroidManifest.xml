@@ -14,9 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.scrap.sabay.SabayDetailActivity"></activity>
-        <activity android:name=".ui.scrap.sabay.MainMenuActivity">
-
+        <activity android:name=".ui.scrap.kohsantepheap.ScrapDetailActivity" android:label="Kohsantepheap.com" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.scrap.kohsantepheap.MainScrapActivity"></meta-data>
+        </activity>
+        <activity android:name=".ui.scrap.kohsantepheap.MainScrapActivity" android:label="Kohsantepheap.com">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"></meta-data>
         </activity>
         <activity
             android:name=".ui.update.UpdateActivity"
@@ -38,7 +44,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

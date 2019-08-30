@@ -14,14 +14,14 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import camdev.sokra.topnews.R;
-import camdev.sokra.topnews.scrap.model.Articles;
+import camdev.sokra.topnews.scrap.model.ScrapArticles;
 
-public class SabayAdapter extends RecyclerView.Adapter<SabayAdapter.Viewholder> {
+public class ArticlesAdapter extends RecyclerView.Adapter<ArticlesAdapter.Viewholder> {
     private AppCompatActivity context;
-    private List<Articles> articlseResponeList;
+    private List<ScrapArticles> articlseResponeList;
     private OnCallback listener;
 
-    public SabayAdapter(List<Articles> articlseResponeList, AppCompatActivity context) {
+    public ArticlesAdapter(List<ScrapArticles> articlseResponeList, AppCompatActivity context) {
         this.articlseResponeList = articlseResponeList;
         this.context = context;
         this.listener = (OnCallback) context;
@@ -30,23 +30,23 @@ public class SabayAdapter extends RecyclerView.Adapter<SabayAdapter.Viewholder> 
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.articles_sabay_rows_lists,viewGroup,false);
-        return new SabayAdapter.Viewholder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.articles_scrap_rows_lists,viewGroup,false);
+        return new ArticlesAdapter.Viewholder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder viewholder, int i) {
-        final Articles sabayArticles = articlseResponeList.get(i);
-        viewholder.title.setText(sabayArticles.getTitle());
-        viewholder.detail.setText(sabayArticles.getDetail());
-        viewholder.datetime.setText(sabayArticles.getPublic_date());
-        Glide.with(context).load("http:"+sabayArticles.getImageURL()).thumbnail(Glide.with(context).load(R.drawable.loading)).into(viewholder.simageURL);
+        final ScrapArticles scrapArticles = articlseResponeList.get(i);
+        viewholder.title.setText(scrapArticles.getTitle());
+        viewholder.datetime.setText(scrapArticles.getPublic_date());
+        Glide.with(context).load(scrapArticles.getImageURL()).thumbnail(Glide.with(context).load(R.drawable.loading)).into(viewholder.simageURL);
+
         viewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (listener !=null){
-                    listener.OnArticleClick(i,sabayArticles);
+                    listener.OnArticleClick(i, scrapArticles);
                 }
             }
         });
@@ -58,24 +58,23 @@ public class SabayAdapter extends RecyclerView.Adapter<SabayAdapter.Viewholder> 
     }
 
     public static class Viewholder extends RecyclerView.ViewHolder {
-        private TextView title,detail,datetime;
+        private TextView title,datetime;
         ImageView simageURL;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.stitle);
             datetime = itemView.findViewById(R.id.sdateTime);
             simageURL = itemView.findViewById(R.id.simageURL);
-            detail = itemView.findViewById(R.id.sdetail);
         }
     }
 
-    public void addMoreItem(List<Articles> articles){
+    public void addMoreItem(List<ScrapArticles> articles){
         int previousDataSize = this.articlseResponeList.size();
         this.articlseResponeList.addAll(articles);
         notifyItemRangeInserted(previousDataSize, articles.size());
     }
 
     public interface OnCallback{
-        void OnArticleClick(int position, Articles sabayArticles);
+        void OnArticleClick(int position, ScrapArticles sabayScrapArticles);
     }
 }

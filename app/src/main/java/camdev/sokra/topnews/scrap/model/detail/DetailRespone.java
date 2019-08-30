@@ -4,7 +4,7 @@ import pl.droidsonroids.jspoon.annotation.Selector;
 
 public class DetailRespone {
 
-    @Selector(".content-outline") private Detail detail;
+    @Selector(".row .col-lg-8.col-md-8") private Detail detail;
     public Detail getDetail() {
         return detail;
     }

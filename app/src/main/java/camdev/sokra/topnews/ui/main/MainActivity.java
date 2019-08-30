@@ -1,14 +1,10 @@
 package camdev.sokra.topnews.ui.main;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,17 +16,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageClickListener;
 import com.synnapps.carouselview.ImageListener;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +43,7 @@ import camdev.sokra.topnews.ui.main.mvp.MainPresenter;
 import camdev.sokra.topnews.model.ArticilesRespone;
 import camdev.sokra.topnews.model.Articles;
 import camdev.sokra.topnews.paginate.PaginationScrollListener;
+import camdev.sokra.topnews.ui.scrap.kohsantepheap.MainScrapActivity;
 import camdev.sokra.topnews.ui.update.UpdateActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                 lyLoading.setVisibility(View.GONE);
                 setTheme(R.style.AppTheme);
             }
-        }, 5000);
+        }, 2000);
 
         //customCarouselLabel =findViewById(R.id.customCarouselLabel);
 
@@ -114,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         mImages = Arrays.asList(new String[]{"" +
                 "https://i2.wp.com/www.feedough.com/wp-content/uploads/2018/04/ADVERTISING-07.png",
                // "https://nullsgpl.b-cdn.net/wp-content/uploads/2018/01/Unlimited-Addons-for-WPBakery-Page-Builder-Free.png",
-                "http://vamarf.net.br/wp-content/uploads/2018/07/CYBER02.png",
+                "ssshttp://vamarf.net.br/wp-content/uploads/2018/07/CYBER02.png",
                // "http://cash4ads.com/wp-content/uploads/2016/09/advertising.jpg",
 
         });
@@ -130,6 +126,15 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                 startActivityForResult(i,ADD_REQUEST_CODE);
             }
         });
+
+        carouselView.setImageClickListener(new ImageClickListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(getApplicationContext(), MainScrapActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     ImageListener imageListener = new ImageListener() {
@@ -138,10 +143,12 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
             //imageView.set(sampleImages[position]);
             Glide.with(getApplicationContext())
                     .load(mImages.get(position))
-                    .thumbnail(Glide.with(getApplicationContext()).load(R.drawable.loading_002))
+                    .thumbnail(Glide.with(getApplicationContext()).load(R.drawable.khnews))
                     .into(imageView);
         }
+
     };
+
 
     private void initUI(){
         total_Page = findViewById(R.id.getTotalPage);
@@ -209,13 +216,12 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
         if (articles != null) {
             if (articles.getPagination().getPage() == articles.getPagination().getTotalPages()) {
                 isLastPage = true;
-                Toast.makeText(this, "All of Articles", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "All of ScrapArticles", Toast.LENGTH_SHORT).show();
             } else {
                 page = articles.getPagination().getPage()+1;
                 Log.e("0000",""+page);
             }
         }
-
     }
 
     @Override
@@ -277,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                     getUpdateArticles.getTitle(),
                     getUpdateArticles.getDescription(),
                     getUpdateArticles.getImage());
-            //Log.e("1111",""+getUpdateArticles.getAuthor().getId());
             Intent u = new Intent(this, UpdateActivity.class);
             Bundle bundle = new Bundle();
             bundle.putParcelable("articlesCRUD", articlesCRUD);
@@ -298,8 +303,7 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                     //articlesAdapter.notifyItemInserted(0);
                     //articlesAdapter.notifyDataSetChanged();
                     //rvArticlse.smoothScrollToPosition(0);
-
-                    Toast.makeText(MainActivity.this, "Update Success"+response.body().getArticles().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Update Success", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -317,9 +321,6 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
                 @Override
                 public void onResponse(Call<ArticlesCRUDRespone> call, Response<ArticlesCRUDRespone> response) {
                     articlesList.add(newArticles);
-                    //articlesAdapter.notifyItemInserted(0);
-                    //articlesAdapter.notifyDataSetChanged();
-                    //rvArticlse.smoothScrollToPosition(0);
                     Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_SHORT).show();
                 }
 
@@ -335,15 +336,6 @@ public class MainActivity extends AppCompatActivity implements ArticlesAdapter.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        /*SharedPreferences shf = getSharedPreferences("Login_SharedPref", MODE_PRIVATE);
-        String strPref = shf.getString("LOGIN", null);
-        if(strPref == null) {
-            menuInflater.inflate(R.menu.main_option_menu, menu);
-            return true;
-            }else {
-                menuInflater.inflate(R.menu.main_option_menu_login, menu);
-            return true;
-        }*/
         menuInflater.inflate(R.menu.main_option_menu, menu);
         return true;
     }

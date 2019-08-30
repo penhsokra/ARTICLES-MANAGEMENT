@@ -8,7 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class BlogServiceGenerator {
     private static Retrofit createRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl("http://news.sabay.com.kh/")
+                .baseUrl("https://kohsantepheapdaily.com.kh/")
                 .addConverterFactory(JspoonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

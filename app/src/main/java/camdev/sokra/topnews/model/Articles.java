@@ -121,7 +121,7 @@ public class Articles implements Parcelable {
 
     @Override
     public String toString() {
-        return "Articles{" +
+        return "ScrapArticles{" +
                 "image='" + image + '\'' +
                 ", category=" + category +
                 ", status='" + status + '\'' +

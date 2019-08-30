@@ -2,13 +2,12 @@ package camdev.sokra.topnews.scrap.model;
 
 import pl.droidsonroids.jspoon.annotation.Selector;
 
-public class Articles {
+public class ScrapArticles {
 
-    @Selector(".row.list-item.item .content > .title > .web") private String title;
-    @Selector(".title .small .pub-date") private String public_date;
-    @Selector(".row.list-item.item .detail") private String detail;
-    @Selector(value = ".row.list-item.item .ele.lozad", attr = "data-background-image") private String imageURL;
-    @Selector(value = ".row.list-item.item > a", attr = "href") private String linkURL;
+    @Selector(".col-md-3.col-sm-6 > article > p > a") private String title;
+    @Selector(".col-md-3.col-sm-6 .time") private String public_date;
+    @Selector(value = ".col-md-3.col-sm-6 > article > .image-box > a > img", attr="data-original") private String imageURL;
+    @Selector(value = ".col-md-3.col-sm-6 > article > .image-box > a", attr="href") private String linkURL;
 
     public String getLinkURL() {
         return linkURL;
@@ -34,13 +33,6 @@ public class Articles {
         this.public_date = public_date;
     }
 
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
 
     public String getImageURL() {
         return imageURL;
@@ -52,10 +44,9 @@ public class Articles {
 
     @Override
     public String toString() {
-        return "Articles{" +
+        return "ScrapArticles{" +
                 "title='" + title + '\'' +
                 ", public_date='" + public_date + '\'' +
-                ", detail='" + detail + '\'' +
                 ", imageURL='" + imageURL + '\'' +
                 ", linkURL='" + linkURL + '\'' +
                 '}';

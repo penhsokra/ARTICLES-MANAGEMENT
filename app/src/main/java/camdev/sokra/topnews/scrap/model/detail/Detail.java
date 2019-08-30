@@ -4,9 +4,9 @@ import pl.droidsonroids.jspoon.annotation.Selector;
 
 public class Detail {
 
-    @Selector(".header.post_content .title.detail> p") private String detailTitle;
-    @Selector(".header.post_content .small #sdate") private String detailDate;
-    @Selector(".detail.content-detail") private String contentDetail;
+    @Selector(".col-lg-8.col-md-8 > h1") private String detailTitle;
+    @Selector(".col-lg-8.col-md-8 .content-text p") private String detailDate;
+    @Selector(".col-lg-8.col-md-8 .content-text") private String contentDetail;
 
     public String getDetailTitle() {
         return detailTitle;
